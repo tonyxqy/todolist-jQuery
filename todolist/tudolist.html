@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ToDoList—最简单的待办事项列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=3.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/todolist.js"></script>
+    <link type="text/css" rel="stylesheet" href="jeDate/skin/jedate.css">
+    <script type="text/javascript" src="jeDate/src/jedate.js"></script>
+    <script src="js/jquery.nestable.js"></script>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="jeinpbox">
+            <div  id="mo" class="jeinpbox-title style-gray">添加截至日期</div>
+            <span><a  href="javascript:void(0);" class="jeinpbox-close">关闭</a></span>
+            <input type="text" class="jeinput" id="test04" placeholder="YYYY-MM-DD hh:mm:ss">
+            <div class="distance style-gray">
+            </div>
+            <div class="jeinpbox-button"><a href="javascript:void(0);" >确定</a>
+            </div>
+        </div>
+
+        <script>
+            jeDate("#test04",{
+                festival:true,
+                minDate:"1900-01-01",              //最小日期
+                maxDate:"2099-12-31",              //最大日期
+                method:{
+                    choose:function (params) {
+                        
+                    }
+                },
+                format: "YYYY-MM-DD hh:mm:ss"
+            }); 
+        </script>
+
+        <!-- 登录 -->
+	<div id="login" class="login">
+        <div id="titlelog" class="login-title">登录会员
+            <span><a id="closeBtn" href="javascript:void(0);" class="close-login">关闭</a></span>
+        </div>
+        <div class="login-input-content">
+            <div class="login-input">
+                <label>用户名：</label>
+                <input type="text" placeholder="请输入用户名" name="info[username]" id="username" class="list-input">
+            </div>
+            <div class="login-input">
+                <label>登录密码：</label>
+                <input type="password" placeholder="请输入登录密码" name="info[password]" id="password" class="list-input">
+            </div>
+        </div>
+		<div class="remind">
+			<input type="checkbox" name="remindbox" id="remind">记住用户名与密码并自动登录
+		</div>
+        <div id="loginBtn" class="login-button"><a href="javascript:void(0);" id="login-button-submit">登录会员</a>
+		</div>
+    </div>
+    <!-- 遮盖层 -->
+    <div id="bg" class="login-bg"></div>
+
+    <div class="view w">
+        <div class="left fl">
+            <header>    
+                <label for="title">ToDoList</label>
+                <div class="logina">
+                    <a href="#" class="lefta" >
+                        <div class="headuser fl">
+                            <span class="glyphicon glyphicon-user fl" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl" id="names">欢迎登录</div>
+                    </a>
+                    <a href="#" class="lefta fr">
+                       <span class=" glyphicon glyphicon-search search" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div class="list">
+                    <a href="#" class="lefta" index='0'>
+                        <div class="headuser0">
+                            <span class="glyphicon glyphicon-time fl icon0 style-gray" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl">我的一天</div>
+                    </a>             
+
+                    <a href="#" class="lefta" index='1'>
+                        <div class="headuser0">
+                            <span class="glyphicon glyphicon-star-empty fl icon0 style-pink" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl">重要</div>
+                    </a>                 
+
+                    <a href="#" class="lefta" index='2'>
+                        <div class="headuser0">
+                            <span class="glyphicon glyphicon-list-alt fl icon0 style-green" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl">计划</div>
+                    </a>             
+
+                    <a href="#" class="lefta bgc-blue" index='3'>
+                        <div class="headuser0 line-blue">
+                            <span class="glyphicon glyphicon-th-list fl icon0 style-blue" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl style-blue">任务</div>
+                    </a>
+                    <div class="division"></div>
+                    <a href="#" class="lefta" index='4'>
+                        <div class="headuser0">
+                            <span class="glyphicon glyphicon-book fl icon0 style-yellow" aria-hidden="true"></span>
+                        </div>
+                        <div class="word fl style-yellow">入门</div>
+                    </a>
+                </div>
+
+            </header>
+        </div>
+        <div class="right fl">
+            <div class="myday holder" style="display: none;" index='0'>
+
+            </div>
+            <div class="important holder" style="display: none;" index='1'>
+                <section>
+                    <div class="bodyhead">
+                        <span class="glyphicon glyphicon-star-empty fl icon1 style-pink" aria-hidden="true"></span>
+                        <div class="bodyword fl style-pink">重要</div>       
+                    </div>
+                    <h2 class="style-pink">正在进行 <span class="imtodocount"></span></h2>
+                      <ol id="todolist" class="">
+                        </ol>
+                    <h2 class="style-pink myclose">
+                        <span class="glyphicon glyphicon-chevron-down fl icon2 style-pink" aria-hidden="true"></span>
+                        已完成 <span class="imdonecount"></span></h2>
+                    <ul id="donelist" style="display: block;">
+                    </ul>
+                </section>
+            </div>
+            <div class="plan holder" style="display: none;" index='2'>
+                <section>
+                    <div class="bodyhead">
+                        <span class="glyphicon glyphicon-list-alt fl icon1 style-green" aria-hidden="true"></span>
+                        <div class="bodyword fl style-green">计划</div>       
+                    </div>
+                    <h2 class="style-green">正在进行 <span class="caltodocount"></span></h2>
+                      <ol id="todolist" class="">
+                        </ol>
+                    <h2 class="style-green myclose">
+                        <span class="glyphicon glyphicon-chevron-down fl icon2 style-green" aria-hidden="true"></span>
+                        已过期 <span class="caldonecount"></span></h2>
+                    <ul id="donelist" style="display: block;">
+                    </ul>
+                </section>
+            </div>
+            <div class="mission holder" style="display: block;" index='3'>
+                <section>
+                    <div class="bodyhead">
+                        <span class="glyphicon glyphicon-th-list fl icon1 style-blue" aria-hidden="true"></span>
+                        <div class="bodyword fl style-blue">任务</div>       
+                    </div>
+                    <h2 class="style-blue">正在进行 <span class="mitodocount"></span></h2>
+                    <div class="dd" id="nestable">  
+                        <ol id="todolist" class="dd-list">
+                        </ol>
+                    </div>
+                    <h2 class="style-blue myclose">
+                        <span class="glyphicon glyphicon-chevron-down fl icon2 style-blue" aria-hidden="true"></span>
+                        已完成 <span class="midonecount"></span></h2>
+                      <ul id="donelist" style="display: block;">
+                      </ul>
+                </section>
+            </div>
+            <div class="rumen holder" style="display: none ;" index='4'>
+                <section>
+                    <div class="bodyhead">
+                        <span class="glyphicon glyphicon-book fl icon1 style-yellow" aria-hidden="true"></span>
+                        <div class="bodyword fl style-yellow">入门</div>       
+                    </div>
+                    <h2 class="style-yellow">使用方法 <span class="todocount"></span></h2>
+                      <ol class="">
+                        <li class="line-yellow">
+                           <p>本网页目前仅适配pc端非ie浏览器</p> 
+                        </li>
+                        <li class="line-yellow">
+                           <p>在下方的输入框内输入你的任务按回车显示</p> 
+                        </li>
+                        <li class="line-yellow">
+                           <p>点击任务条左侧方块确认完成</p>
+                        </li>
+                        <li class="line-yellow">
+                            <p>点击任务条右侧圆圈删除该任务</p>
+                         </li>
+                         <li class="line-yellow">
+                            <p>点击任务条右侧五角星将该任务标记为重要任务，其可以在重要页面查看</p>
+                         </li>
+                         <li class="line-yellow">
+                            <p>点击任务条右侧日历设定该任务截至时间，其可以在计划页面查看</p>
+                         </li>
+                        </ol>
+                    <h2 class="style-yellow myclose">
+                        <span class="glyphicon glyphicon-chevron-down fl icon2 style-yellow" aria-hidden="true"></span>
+                        学会了吗 </h2>
+                      <ul id="donelist" style="display: block;">
+                        <li class="line-yellow">
+                            <input type='checkbox' checked="checked"> <p></p> <a href='javascript:;' id="0" ></a>
+                        </li>
+                      </ul>
+                </section>
+            </div>
+                <input class="todo" type="text" id="title" name="title" placeholder="添加ToDo" required="required" autocomplete="off" />
+        </div>
+    <footer>
+      
+       <script>  
+       $(document).ready(function()
+        {
+        
+            var updateOutput = function(e)
+            {
+                var list   = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+        
+            // activate Nestable for list 1
+            $('#nestable').nestable({
+                group: 1
+            })
+            .on('change', updateOutput);
+        
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));       
+            $('#nestable-menu').on('click', function(e)
+            {
+                var target = $(e.target),
+                    action = target.data('action');
+                if (action === 'expand-all') {
+                    $('.dd').nestable('expandAll');
+                }
+                if (action === 'collapse-all') {
+                    $('.dd').nestable('collapseAll');
+                }
+            });
+
+        
+        });
+    </script>
+    </footer>
+    </div>  
+</div>  
+</body>
+<style type="text/css">
+/* .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+* html .cf { zoom: 1; }
+*:first-child+html .cf { zoom: 1; }
+
+html { margin: 0; padding: 0; }
+body { font-size: 100%; margin: 0; padding: 1.75em; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+h1 { font-size: 1.75em; margin: 0 0 0.6em 0; } */
+/* 
+a { color: #2996cc; }
+a:hover { text-decoration: none; }
+*/
+
+
+/**
+ * Nestable
+ */
+/* 
+.dd { position: relative; display: block; margin: 0; padding: 0; max-width: 600px; list-style: none; font-size: 13px; line-height: 20px; }
+
+.dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
+.dd-list .dd-list { padding-left: 30px; }
+.dd-collapsed .dd-list { display: none; } */
+/* 
+.dd-item,
+.dd-empty,
+.dd-placeholder { display: block; position: relative; margin: 0; padding: 0; min-height: 20px; font-size: 13px; line-height: 20px; } */
+/* 
+.dd-handle { display: block; height: 30px; margin: 5px 0; padding: 5px 10px; color: #333; text-decoration: none; font-weight: bold; border: 1px solid #ccc;
+    background: #fafafa;
+    background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:         linear-gradient(top, #fafafa 0%, #eee 100%);
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dd-handle:hover { color: #2ea8e5; background: #fff; } */
+/* 
+.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 20px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 12px; line-height: 1; text-align: center; font-weight: bold; }
+.dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
+.dd-item > button[data-action="collapse"]:before { content: '-'; } */
+
+/* .dd-placeholder,
+.dd-empty { margin: 5px 0; padding: 0; min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
+.dd-empty { border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                      -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                         -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                              linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}  */
+
+.dd-dragel { position: absolute; pointer-events: none; z-index: 9999; }
+/* .dd-dragel > .dd-item .dd-handle { margin-top: 0; }
+.dd-dragel .dd-handle {
+    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+            box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+} */
+/* .nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; } */
+
+/* .dd-hover > .dd-handle { background: #2ea8e5 !important; } */
+    </style>
+</html>
